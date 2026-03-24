@@ -1,8 +1,8 @@
-This folder demostrates:
-- creation of simple data pipeline
+This folder demonstrates:
+- Creation of simple data pipeline
 - Bronze input to DLT
 - Date Dimension Table
 - DLT notebeook
-- working with table
-- other simple excersizes using Pyspark, Dataframes etc 
+- Working with table
+- Other simple excersizes using Pyspark, Dataframes etc 
 - Reading the data from file and converting into Dataframes
