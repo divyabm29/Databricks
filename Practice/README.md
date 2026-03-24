@@ -5,4 +5,4 @@ This folder demostartes:
 - DLT notebeook
 - working with table
 - other simple excersizes using Pyspark, Dataframes etc 
-- Reading the data from file and conevrting into Dataframes
+- Reading the data from file and converting into Dataframes
