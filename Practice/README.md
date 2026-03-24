@@ -1,4 +1,4 @@
-This folder demostartes:
+This folder demostrates:
 - creation of simple data pipeline
 - Bronze input to DLT
 - Date Dimension Table
