@@ -81,7 +81,7 @@ def list_tickets():
     
     if status_filter:
         query = f"""
-            SELECT ticket_id, title, status, priority, created_by, created_at
+            SELECT ticket_id, title, status, created_by, created_at
             FROM {TICKETS_TABLE_NAME}
             WHERE status = %s
             ORDER BY created_at DESC
@@ -90,7 +90,7 @@ def list_tickets():
         rows = lakebase.run_query(query, (status_filter, limit))
     else:
         query = f"""
-            SELECT ticket_id, title, status, priority, created_by, created_at
+            SELECT ticket_id, title, status, created_by, created_at
             FROM {TICKETS_TABLE_NAME}
             ORDER BY created_at DESC
             LIMIT %s
@@ -104,7 +104,7 @@ def list_tickets():
 def get_ticket(ticket_id):
     """Get a specific ticket by ID."""
     query = f"""
-        SELECT ticket_id, title, status, priority, created_by, created_at
+        SELECT ticket_id, title, status, created_by, created_at
         FROM {TICKETS_TABLE_NAME}
         WHERE ticket_id = %s
     """
@@ -125,7 +125,6 @@ def create_ticket():
         return jsonify({"error": "Title is required"}), 400
     
     title = data.get("title")
-    priority = data.get("priority", "medium")
     created_by = _current_user_email()
     status = data.get("status", "open")
     
@@ -135,12 +134,12 @@ def create_ticket():
     next_ticket_id = max_id_rows[0]['max_id'] + 1
     
     query = f"""
-        INSERT INTO {TICKETS_TABLE_NAME} (ticket_id, title, status, priority, created_by, created_at)
-        VALUES (%s, %s, %s, %s, %s, NOW())
-        RETURNING ticket_id, title, status, priority, created_by, created_at
+        INSERT INTO {TICKETS_TABLE_NAME} (ticket_id, title, status, created_by, created_at)
+        VALUES (%s, %s, %s, %s, NOW())
+        RETURNING ticket_id, title, status, created_by, created_at
     """
     
-    rows = lakebase.run_query(query, (next_ticket_id, title, status, priority, created_by))
+    rows = lakebase.run_query(query, (next_ticket_id, title, status, created_by))
     
     if not rows:
         return jsonify({"error": "Failed to create ticket"}), 500
@@ -167,7 +166,7 @@ def update_ticket_status(ticket_id):
         UPDATE {TICKETS_TABLE_NAME}
         SET status = %s
         WHERE ticket_id = %s
-        RETURNING ticket_id, title, status, priority, created_by, created_at
+        RETURNING ticket_id, title, status, created_by, created_at
     """
     
     rows = lakebase.run_query(query, (new_status, ticket_id))
@@ -228,7 +227,7 @@ def add_ticket_message(ticket_id):
     
     query = f"""
         INSERT INTO {TICKET_MESSAGES_TABLE_NAME} (message_id, ticket_id, message_text, author, created_at)
-        VALUES (%s, %s, %s, %s, %s, NOW())
+        VALUES (%s, %s, %s, %s, NOW())
         RETURNING message_id, ticket_id, message_text, author, created_at
     """
     

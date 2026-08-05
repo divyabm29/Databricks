@@ -13,17 +13,10 @@ env:
     value: "8000"
   
   # Lakebase connection configuration
-  # Replace these values with your actual Lakebase credentials
-  - name: LAKEBASE_HOST
-    value: "your-lakebase-host.databricks.com"
-  - name: LAKEBASE_PORT
-    value: "5432"
-  - name: LAKEBASE_DATABASE
-    value: "your_database_name"
-  - name: LAKEBASE_USER
-    value: "your_username"
-  - name: LAKEBASE_PASSWORD
-    value: "your_password"
+  - name: LAKEBASE_SECRET_SCOPE
+    value: "database"
+  - name: LAKEBASE_SECRET_KEY
+    value: "lakebase-url"
   
   # Table names (optional - defaults are provided in app.py)
   - name: TICKETS_TABLE_NAME

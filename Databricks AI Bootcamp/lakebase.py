@@ -14,7 +14,6 @@ from contextlib import contextmanager
 import psycopg2
 from databricks.sdk import WorkspaceClient
 from psycopg2.extras import RealDictCursor
-from sqlalchemy import create_engine
 
 _w = WorkspaceClient()
 
@@ -38,17 +37,32 @@ def get_connection():
         conn.close()
 
 
-def get_engine():
-    """Return a SQLAlchemy engine for Lakebase."""
-    return create_engine(_lakebase_url())
-
-
 def run_query(sql: str, params: tuple | dict | None = None) -> list[dict]:
-    """Run a read query against Lakebase and return rows as list[dict]."""
+    """Run a query against Lakebase and return rows as list[dict].
+    
+    Automatically commits if the query contains INSERT/UPDATE/DELETE/CREATE/DROP.
+    Returns results for queries with RETURNING clause or SELECT statements.
+    """
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(sql, params)
-            return cur.fetchall()
+            
+            # Check if this is a write operation that needs commit
+            sql_upper = sql.strip().upper()
+            needs_commit = any(sql_upper.startswith(kw) for kw in 
+                             ['INSERT', 'UPDATE', 'DELETE', 'CREATE', 'DROP', 'ALTER'])
+            
+            # Fetch results if available (SELECT or RETURNING clause)
+            if cur.description is not None:
+                results = cur.fetchall()
+            else:
+                results = []
+            
+            # Commit if needed
+            if needs_commit:
+                conn.commit()
+            
+            return results
 
 
 def run_write(sql: str, params: tuple | dict | None = None) -> int:
