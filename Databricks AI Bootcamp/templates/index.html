@@ -5,354 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support Ticket System</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-        
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-            min-height: 600px;
-        }
-        
-        .left-panel, .right-panel {
-            padding: 30px;
-        }
-        
-        .left-panel {
-            border-right: 1px solid #e0e0e0;
-        }
-        
-        .section-title {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-success {
-            background: #48bb78;
-            color: white;
-        }
-        
-        .btn-success:hover {
-            background: #38a169;
-        }
-        
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 12px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-        }
-        
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        
-        .tickets-list {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        
-        .ticket-card {
-            background: #f7fafc;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .ticket-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-            transform: translateX(5px);
-        }
-        
-        .ticket-card.selected {
-            border-color: #667eea;
-            background: #edf2f7;
-        }
-        
-        .ticket-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 10px;
-        }
-        
-        .ticket-id {
-            font-size: 12px;
-            color: #718096;
-            font-weight: 600;
-        }
-        
-        .ticket-subject {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 8px;
-        }
-        
-        .ticket-meta {
-            display: flex;
-            gap: 15px;
-            font-size: 12px;
-            color: #718096;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
-        .status-open {
-            background: #bee3f8;
-            color: #2c5282;
-        }
-        
-        .status-in_progress {
-            background: #feebc8;
-            color: #7c2d12;
-        }
-        
-        .status-resolved {
-            background: #c6f6d5;
-            color: #22543d;
-        }
-        
-        .status-closed {
-            background: #e2e8f0;
-            color: #2d3748;
-        }
-        
-        .priority-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .priority-low {
-            background: #c6f6d5;
-            color: #22543d;
-        }
-        
-        .priority-medium {
-            background: #feebc8;
-            color: #7c2d12;
-        }
-        
-        .priority-high {
-            background: #fed7d7;
-            color: #742a2a;
-        }
-        
-        .ticket-detail {
-            display: none;
-        }
-        
-        .ticket-detail.active {
-            display: block;
-        }
-        
-        .detail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        
-        .detail-info h2 {
-            font-size: 1.8em;
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-        
-        .detail-meta {
-            display: flex;
-            gap: 20px;
-            margin-top: 10px;
-        }
-        
-        .messages-section {
-            margin-top: 30px;
-        }
-        
-        .messages-list {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-        
-        .message-card {
-            background: #f7fafc;
-            border-left: 4px solid #667eea;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-        }
-        
-        .message-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 12px;
-            color: #718096;
-        }
-        
-        .message-author {
-            font-weight: 600;
-            color: #2d3748;
-        }
-        
-        .message-text {
-            color: #2d3748;
-            line-height: 1.6;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #718096;
-        }
-        
-        .empty-state svg {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
-        
-        .alert {
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        
-        .alert-success {
-            background: #c6f6d5;
-            color: #22543d;
-            border: 1px solid #9ae6b4;
-        }
-        
-        .alert-error {
-            background: #fed7d7;
-            color: #742a2a;
-            border: 1px solid #fc8181;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        @media (max-width: 1024px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .left-panel {
-                border-right: none;
-                border-bottom: 1px solid #e0e0e0;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: 600px; }
+        .left-panel, .right-panel { padding: 30px; }
+        .left-panel { border-right: 1px solid #e0e0e0; }
+        .section-title { font-size: 1.5em; margin-bottom: 20px; color: #333; display: flex; justify-content: space-between; align-items: center; }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s; }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102,126,234,0.4); }
+        .btn-success { background: #48bb78; color: white; }
+        .btn-small { padding: 8px 16px; font-size: 13px; }
+        .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filter-btn { padding: 8px 16px; border: 2px solid #e0e0e0; background: white; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+        .filter-btn:hover { border-color: #667eea; }
+        .filter-btn.active { background: #667eea; color: white; border-color: #667eea; }
+        .tickets-list { display: flex; flex-direction: column; gap: 12px; max-height: 500px; overflow-y: auto; }
+        .ticket-card { background: white; border: 2px solid #e0e0e0; border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.2s; }
+        .ticket-card:hover { border-color: #667eea; box-shadow: 0 2px 8px rgba(102,126,234,0.2); }
+        .ticket-card.selected { border-color: #667eea; background: #f0f4ff; }
+        .ticket-id { font-weight: 700; color: #667eea; font-size: 0.9em; }
+        .ticket-subject { font-size: 1.1em; font-weight: 600; color: #2d3748; margin-bottom: 8px; }
+        .ticket-meta { display: flex; gap: 10px; font-size: 0.85em; color: #718096; flex-wrap: wrap; }
+        .status-badge, .priority-badge { padding: 4px 12px; border-radius: 12px; font-size: 0.75em; font-weight: 600; text-transform: uppercase; }
+        .status-open { background: #c6f6d5; color: #22543d; }
+        .status-in_progress { background: #feebc8; color: #7c2d12; }
+        .status-resolved { background: #bee3f8; color: #2c5282; }
+        .status-closed { background: #e2e8f0; color: #2d3748; }
+        .priority-high { background: #fed7d7; color: #742a2a; }
+        .priority-medium { background: #feebc8; color: #7c2d12; }
+        .priority-low { background: #c6f6d5; color: #22543d; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #2d3748; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 14px; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .ticket-detail { display: none; }
+        .ticket-detail.active { display: block; }
+        .detail-header { border-bottom: 2px solid #e0e0e0; padding-bottom: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; }
+        .detail-meta { display: flex; gap: 10px; flex-wrap: wrap; }
+        .messages-list { margin-bottom: 20px; }
+        .message-card { background: #f7fafc; border-left: 4px solid #667eea; padding: 15px; border-radius: 6px; margin-bottom: 12px; }
+        .message-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85em; color: #718096; }
+        .message-author { font-weight: 600; color: #2d3748; }
+        .message-text { color: #2d3748; line-height: 1.6; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #718096; }
+        .alert { padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; }
+        .alert-success { background: #c6f6d5; color: #22543d; border: 1px solid #9ae6b4; }
+        .alert-error { background: #fed7d7; color: #742a2a; border: 1px solid #fc8181; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -361,24 +64,17 @@
             <h1>🎫 Support Ticket System</h1>
             <p>Manage your support tickets with ease</p>
         </div>
-        
         <div class="main-content">
-            <!-- Left Panel: Tickets List -->
             <div class="left-panel">
                 <div class="section-title">
                     <span>Tickets</span>
                     <button class="btn btn-primary btn-small" onclick="showNewTicketForm()">+ New Ticket</button>
                 </div>
-                
                 <div id="newTicketForm" class="hidden" style="margin-bottom: 20px; padding: 20px; background: #f7fafc; border-radius: 8px;">
                     <h3 style="margin-bottom: 15px;">Create New Ticket</h3>
                     <div class="form-group">
-                        <label>Subject *</label>
-                        <input type="text" id="newSubject" placeholder="Brief description of the issue">
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea id="newDescription" placeholder="Detailed description of the issue"></textarea>
+                        <label>Title *</label>
+                        <input type="text" id="newTitle" placeholder="Brief description of the issue">
                     </div>
                     <div class="form-group">
                         <label>Priority</label>
@@ -393,322 +89,83 @@
                         <button class="btn" style="background: #e2e8f0;" onclick="hideNewTicketForm()">Cancel</button>
                     </div>
                 </div>
-                
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterTickets('all')">All</button>
+                    <button class="filter-btn" onclick="filterTickets('open')">Open</button>
+                    <button class="filter-btn" onclick="filterTickets('in_progress')">In Progress</button>
+                    <button class="filter-btn" onclick="filterTickets('resolved')">Resolved</button>
+                    <button class="filter-btn" onclick="filterTickets('closed')">Closed</button>
+                </div>
                 <div id="alertContainer"></div>
-                
                 <div class="tickets-list" id="ticketsList">
-                    <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <p>Loading tickets...</p>
-                    </div>
+                    <div class="empty-state"><p>Loading tickets...</p></div>
                 </div>
             </div>
-            
-            <!-- Right Panel: Ticket Details -->
             <div class="right-panel">
                 <div id="emptyDetail" class="empty-state">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                    </svg>
                     <h3>Select a ticket to view details</h3>
                 </div>
-                
-                <div id="ticketDetail" class="ticket-detail">
-                    <!-- Ticket details will be loaded here -->
-                </div>
+                <div id="ticketDetail" class="ticket-detail"></div>
             </div>
         </div>
     </div>
-    
     <script>
         let currentTicketId = null;
+        let currentFilter = 'all';
+        let allTickets = [];
         
-        // Load tickets on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadTickets();
-        });
+        document.addEventListener('DOMContentLoaded', () => loadTickets());
         
         function showAlert(message, type = 'success') {
-            const container = document.getElementById('alertContainer');
             const alert = document.createElement('div');
             alert.className = `alert alert-${type}`;
             alert.textContent = message;
-            container.appendChild(alert);
-            
-            setTimeout(() => {
-                alert.remove();
-            }, 5000);
-        }
-        
-        function showNewTicketForm() {
-            document.getElementById('newTicketForm').classList.remove('hidden');
-        }
-        
-        function hideNewTicketForm() {
-            document.getElementById('newTicketForm').classList.add('hidden');
-            document.getElementById('newSubject').value = '';
-            document.getElementById('newDescription').value = '';
-            document.getElementById('newPriority').value = 'medium';
-        }
-        
-        async function loadTickets() {
-            try {
-                const response = await fetch('/tickets');
-                const tickets = await response.json();
-                
-                const container = document.getElementById('ticketsList');
-                
-                if (tickets.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><p>No tickets found. Create your first ticket!</p></div>';
-                    return;
-                }
-                
-                container.innerHTML = tickets.map(ticket => `
-                    <div class="ticket-card ${currentTicketId === ticket.id ? 'selected' : ''}" onclick="selectTicket(${ticket.id})">
-                        <div class="ticket-header">
-                            <span class="ticket-id">#${ticket.id}</span>
-                            <span class="priority-badge priority-${ticket.priority}">${ticket.priority}</span>
-                        </div>
-                        <div class="ticket-subject">${ticket.subject}</div>
-                        <div class="ticket-meta">
-                            <span class="status-badge status-${ticket.status}">${ticket.status.replace('_', ' ')}</span>
-                            <span>Created: ${new Date(ticket.created_at).toLocaleDateString()}</span>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (error) {
-                console.error('Error loading tickets:', error);
-                showAlert('Error loading tickets', 'error');
-            }
-        }
-        
-        async function selectTicket(ticketId) {
-            currentTicketId = ticketId;
-            
-            try {
-                const [ticketResponse, messagesResponse] = await Promise.all([
-                    fetch(`/tickets/${ticketId}`),
-                    fetch(`/tickets/${ticketId}/messages`)
-                ]);
-                
-                const ticket = await ticketResponse.json();
-                const messages = await messagesResponse.json();
-                
-                document.getElementById('emptyDetail').style.display = 'none';
-                const detailContainer = document.getElementById('ticketDetail');
-                detailContainer.classList.add('active');
-                
-                detailContainer.innerHTML = `
-                    <div class="detail-header">
-                        <div class="detail-info">
-                            <h2>${ticket.subject}</h2>
-                            <div class="detail-meta">
-                                <span class="ticket-id">#${ticket.id}</span>
-                                <span class="status-badge status-${ticket.status}">${ticket.status.replace('_', ' ')}</span>
-                                <span class="priority-badge priority-${ticket.priority}">${ticket.priority}</span>
-                            </div>
-                        </div>
-                        <div>
-                            <select id="statusSelect" class="form-group" onchange="updateStatus(${ticket.id})" style="padding: 8px; border-radius: 6px; border: 2px solid #e0e0e0;">
-                                <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>Open</option>
-                                <option value="in_progress" ${ticket.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
-                                <option value="resolved" ${ticket.status === 'resolved' ? 'selected' : ''}>Resolved</option>
-                                <option value="closed" ${ticket.status === 'closed' ? 'selected' : ''}>Closed</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <p style="color: #718096; margin-bottom: 5px;">Created by: <strong>${ticket.created_by}</strong></p>
-                        <p style="color: #718096;">Created: ${new Date(ticket.created_at).toLocaleString()}</p>
-                    </div>
-                    
-                    ${ticket.description ? `
-                        <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                            <p style="color: #2d3748; line-height: 1.6;">${ticket.description}</p>
-                        </div>
-                    ` : ''}
-                    
-                    <div class="messages-section">
-                        <h3 style="margin-bottom: 15px;">Messages (${messages.length})</h3>
-                        
-                        <div class="messages-list">
-                            ${messages.length > 0 ? messages.map(msg => `
-                                <div class="message-card">
-                                    <div class="message-header">
-                                        <span class="message-author">${msg.created_by}</span>
-                                        <span>${new Date(msg.created_at).toLocaleString()}</span>
-                                    </div>
-                                    <div class="message-text">${msg.message}</div>
-                                </div>
-                            `).join('') : '<p style="color: #718096; text-align: center; padding: 20px;">No messages yet</p>'}
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Add a message</label>
-                            <textarea id="newMessage" placeholder="Type your message here..."></textarea>
-                        </div>
-                        <button class="btn btn-primary" onclick="addMessage(${ticket.id})">Send Message</button>
-                    </div>
-                `;
-                
-                loadTickets(); // Refresh to show selected state
-            } catch (error) {
-                console.error('Error loading ticket details:', error);
-                showAlert('Error loading ticket details', 'error');
-            }
-        }
-        
-        async function createTicket() {
-            const subject = document.getElementById('newSubject').value.trim();
-            const description = document.getElementById('newDescription').value.trim();
-            const priority = document.getElementById('newPriority').value;
-            
-            if (!subject) {
-                showAlert('Subject is required', 'error');
-                return;
-            }
-            
-            try {
-                const response = await fetch('/tickets', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ subject, description, priority })
-                });
-                
-                const ticket = await response.json();
-                
-                if (response.ok) {
-                    showAlert('Ticket created successfully!');
-                    hideNewTicketForm();
-                    await loadTickets();
-                    selectTicket(ticket.id);
-                } else {
-                    showAlert(ticket.error || 'Error creating ticket', 'error');
-                }
-            } catch (error) {
-                console.error('Error creating ticket:', error);
-                showAlert('Error creating ticket', 'error');
-            }
-        }
-        
-        async function addMessage(ticketId) {
-            const message = document.getElementById('newMessage').value.trim();
-            
-            if (!message) {
-                showAlert('Message cannot be empty', 'error');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`/tickets/${ticketId}/messages`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ message })
-                });
-                
-                if (response.ok) {
-                    showAlert('Message added successfully!');
-                    document.getElementById('newMessage').value = '';
-                    selectTicket(ticketId); // Reload ticket details
-                } else {
-                    const error = await response.json();
-                    showAlert(error.error || 'Error adding message', 'error');
-                }
-            } catch (error) {
-                console.error('Error adding message:', error);
-                showAlert('Error adding message', 'error');
-            }
-        }
-        
-        async function updateStatus(ticketId) {
-            const newStatus = document.getElementById('statusSelect').value;
-            
-            try {
-                const response = await fetch(`/tickets/${ticketId}/status`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ status: newStatus })
-                });
-                
-                if (response.ok) {
-                    showAlert('Status updated successfully!');
-                    loadTickets(); // Refresh tickets list
-                    selectTicket(ticketId); // Reload ticket details
-                } else {
-                    const error = await response.json();
-                    showAlert(error.error || 'Error updating status', 'error');
-                }
-            } catch (error) {
-                console.error('Error updating status:', error);
-                showAlert('Error updating status', 'error');
-            }
-        }
-    </script>
-</body>
-</html>
-    
-    <script>
-        let currentTicketId = null;
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            loadTickets();
-        });
-        
-        function showAlert(message, type = 'success') {
-            const container = document.getElementById('alertContainer');
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type}`;
-            alert.textContent = message;
-            container.appendChild(alert);
+            document.getElementById('alertContainer').appendChild(alert);
             setTimeout(() => alert.remove(), 5000);
         }
         
-        function showNewTicketForm() {
-            document.getElementById('newTicketForm').classList.remove('hidden');
+        function showNewTicketForm() { document.getElementById('newTicketForm').classList.remove('hidden'); }
+        function hideNewTicketForm() { 
+            document.getElementById('newTicketForm').classList.add('hidden'); 
+            document.getElementById('newTitle').value = '';
+            document.getElementById('newPriority').value = 'medium';
         }
         
-        function hideNewTicketForm() {
-            document.getElementById('newTicketForm').classList.add('hidden');
-            document.getElementById('newSubject').value = '';
-            document.getElementById('newDescription').value = '';
-            document.getElementById('newPriority').value = 'medium';
+        function filterTickets(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderTickets();
+        }
+        
+        function renderTickets() {
+            const container = document.getElementById('ticketsList');
+            const filtered = currentFilter === 'all' ? allTickets : allTickets.filter(t => t.status === currentFilter);
+            
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No tickets found</p></div>';
+                return;
+            }
+            
+            container.innerHTML = filtered.map(t => `
+                <div class="ticket-card ${currentTicketId === t.ticket_id ? 'selected' : ''}" onclick="selectTicket(${t.ticket_id})">
+                    <div class="ticket-id">#${t.ticket_id}</div>
+                    <div class="ticket-subject">${t.title}</div>
+                    <div class="ticket-meta">
+                        <span class="status-badge status-${t.status}">${t.status.replace('_', ' ')}</span>
+                        <span class="priority-badge priority-${t.priority}">${t.priority}</span>
+                        <span>${new Date(t.created_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `).join('');
         }
         
         async function loadTickets() {
             try {
                 const response = await fetch('/tickets');
-                const tickets = await response.json();
-                const container = document.getElementById('ticketsList');
-                
-                if (tickets.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><p>No tickets found. Create your first ticket!</p></div>';
-                    return;
-                }
-                
-                container.innerHTML = tickets.map(ticket => `
-                    <div class="ticket-card ${currentTicketId === ticket.id ? 'selected' : ''}" onclick="selectTicket(${ticket.id})">
-                        <div class="ticket-header">
-                            <span class="ticket-id">#${ticket.id}</span>
-                            <span class="priority-badge priority-${ticket.priority}">${ticket.priority}</span>
-                        </div>
-                        <div class="ticket-subject">${ticket.subject}</div>
-                        <div class="ticket-meta">
-                            <span class="status-badge status-${ticket.status}">${ticket.status.replace('_', ' ')}</span>
-                            <span>Created: ${new Date(ticket.created_at).toLocaleDateString()}</span>
-                        </div>
-                    </div>
-                `).join('');
+                allTickets = await response.json();
+                renderTickets();
             } catch (error) {
-                console.error('Error loading tickets:', error);
                 showAlert('Error loading tickets', 'error');
             }
         }
@@ -716,132 +173,122 @@
         async function selectTicket(ticketId) {
             currentTicketId = ticketId;
             try {
-                const [ticketResponse, messagesResponse] = await Promise.all([
-                    fetch(`/tickets/${ticketId}`),
-                    fetch(`/tickets/${ticketId}/messages`)
+                const [t, msgs] = await Promise.all([
+                    fetch(`/tickets/${ticketId}`).then(r => r.json()),
+                    fetch(`/tickets/${ticketId}/messages`).then(r => r.json())
                 ]);
-                const ticket = await ticketResponse.json();
-                const messages = await messagesResponse.json();
                 document.getElementById('emptyDetail').style.display = 'none';
-                const detailContainer = document.getElementById('ticketDetail');
-                detailContainer.classList.add('active');
-                detailContainer.innerHTML = `
+                const detail = document.getElementById('ticketDetail');
+                detail.classList.add('active');
+                detail.innerHTML = `
                     <div class="detail-header">
-                        <div class="detail-info">
-                            <h2>${ticket.subject}</h2>
+                        <div>
+                            <h2>${t.title}</h2>
                             <div class="detail-meta">
-                                <span class="ticket-id">#${ticket.id}</span>
-                                <span class="status-badge status-${ticket.status}">${ticket.status.replace('_', ' ')}</span>
-                                <span class="priority-badge priority-${ticket.priority}">${ticket.priority}</span>
+                                <span class="ticket-id">#${t.ticket_id}</span>
+                                <span class="status-badge status-${t.status}">${t.status.replace('_', ' ')}</span>
+                                <span class="priority-badge priority-${t.priority}">${t.priority}</span>
                             </div>
                         </div>
-                        <div>
-                            <select id="statusSelect" onchange="updateStatus(${ticket.id})" style="padding: 8px; border-radius: 6px; border: 2px solid #e0e0e0;">
-                                <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>Open</option>
-                                <option value="in_progress" ${ticket.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
-                                <option value="resolved" ${ticket.status === 'resolved' ? 'selected' : ''}>Resolved</option>
-                                <option value="closed" ${ticket.status === 'closed' ? 'selected' : ''}>Closed</option>
-                            </select>
-                        </div>
+                        <select id="statusSelect" onchange="updateStatus(${t.ticket_id})" style="padding:8px; border-radius:6px; border:2px solid #e0e0e0;">
+                            <option value="open" ${t.status === 'open' ? 'selected' : ''}>Open</option>
+                            <option value="in_progress" ${t.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="resolved" ${t.status === 'resolved' ? 'selected' : ''}>Resolved</option>
+                            <option value="closed" ${t.status === 'closed' ? 'selected' : ''}>Closed</option>
+                        </select>
                     </div>
-                    <div style="margin-bottom: 20px;">
-                        <p style="color: #718096; margin-bottom: 5px;">Created by: <strong>${ticket.created_by}</strong></p>
-                        <p style="color: #718096;">Created: ${new Date(ticket.created_at).toLocaleString()}</p>
+                    <div style="margin-bottom:20px;">
+                        <p style="color:#718096;">Created by: <strong>${t.created_by}</strong></p>
+                        <p style="color:#718096;">${new Date(t.created_at).toLocaleString()}</p>
                     </div>
-                    ${ticket.description ? `<div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;"><p style="color: #2d3748; line-height: 1.6;">${ticket.description}</p></div>` : ''}
                     <div class="messages-section">
-                        <h3 style="margin-bottom: 15px;">Messages (${messages.length})</h3>
+                        <h3 style="margin-bottom:15px;">Messages (${msgs.length})</h3>
                         <div class="messages-list">
-                            ${messages.length > 0 ? messages.map(msg => `<div class="message-card"><div class="message-header"><span class="message-author">${msg.created_by}</span><span>${new Date(msg.created_at).toLocaleString()}</span></div><div class="message-text">${msg.message}</div></div>`).join('') : '<p style="color: #718096; text-align: center; padding: 20px;">No messages yet</p>'}
+                            ${msgs.length > 0 ? msgs.map(m => `
+                                <div class="message-card">
+                                    <div class="message-header">
+                                        <span class="message-author">${m.author}</span>
+                                        <span>${new Date(m.created_at).toLocaleString()}</span>
+                                    </div>
+                                    <div class="message-text">${m.message_text}</div>
+                                </div>
+                            `).join('') : '<p style="text-align:center;padding:20px;color:#718096;">No messages yet</p>'}
                         </div>
                         <div class="form-group">
                             <label>Add a message</label>
-                            <textarea id="newMessage" placeholder="Type your message here..."></textarea>
+                            <textarea id="newMessage" placeholder="Type your message..."></textarea>
                         </div>
-                        <button class="btn btn-primary" onclick="addMessage(${ticket.id})">Send Message</button>
+                        <button class="btn btn-primary" onclick="addMessage(${t.ticket_id})">Send Message</button>
                     </div>
                 `;
-                loadTickets();
+                renderTickets();
             } catch (error) {
-                console.error('Error loading ticket details:', error);
-                showAlert('Error loading ticket details', 'error');
+                showAlert('Error loading ticket', 'error');
             }
         }
         
         async function createTicket() {
-            const subject = document.getElementById('newSubject').value.trim();
-            const description = document.getElementById('newDescription').value.trim();
+            const title = document.getElementById('newTitle').value.trim();
             const priority = document.getElementById('newPriority').value;
-            if (!subject) {
-                showAlert('Subject is required', 'error');
-                return;
-            }
+            if (!title) { showAlert('Title is required', 'error'); return; }
             try {
-                const response = await fetch('/tickets', {
+                const r = await fetch('/tickets', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ subject, description, priority })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, priority })
                 });
-                const ticket = await response.json();
-                if (response.ok) {
-                    showAlert('Ticket created successfully!');
+                const ticket = await r.json();
+                if (r.ok) {
+                    showAlert('Ticket created!');
                     hideNewTicketForm();
                     await loadTickets();
-                    selectTicket(ticket.id);
+                    selectTicket(ticket.ticket_id);
                 } else {
-                    showAlert(ticket.error || 'Error creating ticket', 'error');
+                    showAlert(ticket.error || 'Error', 'error');
                 }
             } catch (error) {
-                console.error('Error creating ticket:', error);
                 showAlert('Error creating ticket', 'error');
             }
         }
         
         async function addMessage(ticketId) {
-            const message = document.getElementById('newMessage').value.trim();
-            if (!message) {
-                showAlert('Message cannot be empty', 'error');
-                return;
-            }
+            const message_text = document.getElementById('newMessage').value.trim();
+            if (!message_text) { showAlert('Message required', 'error'); return; }
             try {
-                const response = await fetch(`/tickets/${ticketId}/messages`, {
+                const r = await fetch(`/tickets/${ticketId}/messages`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ message })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message_text })
                 });
-                if (response.ok) {
-                    showAlert('Message added successfully!');
+                if (r.ok) {
+                    showAlert('Message added!');
                     document.getElementById('newMessage').value = '';
                     selectTicket(ticketId);
                 } else {
-                    const error = await response.json();
-                    showAlert(error.error || 'Error adding message', 'error');
+                    showAlert('Error adding message', 'error');
                 }
             } catch (error) {
-                console.error('Error adding message:', error);
-                showAlert('Error adding message', 'error');
+                showAlert('Error', 'error');
             }
         }
         
         async function updateStatus(ticketId) {
-            const newStatus = document.getElementById('statusSelect').value;
+            const status = document.getElementById('statusSelect').value;
             try {
-                const response = await fetch(`/tickets/${ticketId}/status`, {
+                const r = await fetch(`/tickets/${ticketId}/status`, {
                     method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ status: newStatus })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
                 });
-                if (response.ok) {
-                    showAlert('Status updated successfully!');
-                    loadTickets();
+                if (r.ok) {
+                    showAlert('Status updated!');
+                    await loadTickets();
                     selectTicket(ticketId);
                 } else {
-                    const error = await response.json();
-                    showAlert(error.error || 'Error updating status', 'error');
+                    showAlert('Error updating status', 'error');
                 }
             } catch (error) {
-                console.error('Error updating status:', error);
-                showAlert('Error updating status', 'error');
+                showAlert('Error', 'error');
             }
         }
     </script>

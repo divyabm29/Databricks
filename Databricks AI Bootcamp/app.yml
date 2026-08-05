@@ -1,0 +1,29 @@
+# Databricks App Configuration
+command:
+  - python
+  - app.py
+
+env:
+  # Flask configuration
+  - name: FLASK_RUN_HOST
+    value: "0.0.0.0"
+  - name: FLASK_RUN_PORT
+    value: "8000"
+  
+  # Lakebase connection (replace with your actual credentials)
+  - name: LAKEBASE_HOST
+    value: "your-lakebase-host.databricks.com"
+  - name: LAKEBASE_PORT
+    value: "5432"
+  - name: LAKEBASE_DATABASE
+    value: "your_database_name"
+  - name: LAKEBASE_USER
+    value: "your_username"
+  - name: LAKEBASE_PASSWORD
+    value: "your_password"
+  
+  # Table names
+  - name: TICKETS_TABLE_NAME
+    value: "tickets"
+  - name: TICKET_MESSAGES_TABLE_NAME
+    value: "ticket_messages"
