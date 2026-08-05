@@ -1,0 +1,4 @@
+# For a Flask/FastAPI app:
+command:
+  - "python"
+  - "app.py"
